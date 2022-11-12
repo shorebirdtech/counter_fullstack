@@ -2,15 +2,20 @@
 
 A new Flutter project.
 
-## Getting Started
+# Desired counter behavior
+* Display last cached.
+* Display indicator that offline / loading.
+* Speculatively apply local actions.
+* Sync actions to server
 
-This project is a starting point for a Flutter application.
+# Initial behaviors
+* Display local default or last cached
+* Display loading indicator
 
-A few resources to get you started if this is your first Flutter project:
+# Offline behavior
+* Give last cached.
+* Display loading indicator
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Update behaviors
+* Process action locally, speculatively, sync to server.
+* Process action on server

@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
 
-
-@backend
-Stream<int> getCount(Session session) {
-return session.store.watch('count', default: 0);
-}
-
-@backend
-void incrementCount(Session session) {
-  session.store['count']++;
-}
+import 'infra/client.dart';
+import 'backend.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,11 +27,27 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  @override 
+  @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late CachedValue<int> _counter;
+  late Connection _connection;
+
+  @override
+  void initState() {
+    super.initState();
+    _connection = Connection();
+    _counter = _connection.cache(getCount, initial: 0);
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _connection.call(incrementCount);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,9 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-              Connection.of(context).incrementCounter();
-        }),
+        onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
