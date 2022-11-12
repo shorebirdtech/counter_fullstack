@@ -31,21 +31,43 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+abstract class ShorebirdState<T extends StatefulWidget> extends State<T> {
+  final List<Listenable> _listenables = <Listenable>[];
+
+  void watch(Listenable listenable) {
+    _listenables.add(listenable);
+    listenable.addListener(_update);
+  }
+
+  void _update() {
+    setState(() {});
+  }
+
+  @override
+  @mustCallSuper
+  void dispose() {
+    final listenables = List.from(_listenables);
+    _listenables.clear();
+    for (final listenable in listenables) {
+      listenable.removeListener(_update);
+    }
+    super.dispose();
+  }
+}
+
+class _MyHomePageState extends ShorebirdState<MyHomePage> {
   late CachedValue<int> _counter;
   late Connection _connection;
 
   @override
   void initState() {
     super.initState();
-    _connection = Connection();
-    _counter = _connection.cache(getCount, initial: 0);
+    _connection = MyInterface(Connection(url));
+    watch(_counter = _connection.getCount());
   }
 
   void _incrementCounter() {
-    setState(() {
-      _connection.call(incrementCount);
-    });
+    _connection.incrementCount();
   }
 
   @override

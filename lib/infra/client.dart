@@ -3,9 +3,16 @@ export 'shared.dart';
 
 import 'package:flutter/foundation.dart';
 
+// Is this just a https://api.flutter.dev/flutter/widgets/AsyncSnapshot-class.html?
 // This differs from ValueNotifier, in that its read-only from the consumer.
 class CachedValue<T> extends ChangeNotifier implements ValueListenable<T> {
   CachedValue(this._value);
+
+  // Needs speculation state.
+
+  // state.Speculative
+  // state.Authoratative
+  // state.Default
 
   @override
   T get value => _value;
