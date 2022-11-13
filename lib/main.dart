@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'infra/client.dart';
@@ -31,6 +32,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+// Dart (intentionally) does not have finalizers, so to manage listening
+// its easier to let State do so, since it already gets a dispose call.
 abstract class ShorebirdState<T extends StatefulWidget> extends State<T> {
   final List<Listenable> _listenables = <Listenable>[];
 
@@ -40,6 +43,8 @@ abstract class ShorebirdState<T extends StatefulWidget> extends State<T> {
   }
 
   void _update() {
+    // One of our listenables changed, so rebuild the entire widget.
+    // If you want more precise control, you can use a ValueListenableBuilder.
     setState(() {});
   }
 
@@ -55,6 +60,25 @@ abstract class ShorebirdState<T extends StatefulWidget> extends State<T> {
   }
 }
 
+// generated
+class MyInterface {
+  MyInterface(this._connection);
+
+  final Connection _connection;
+
+  CachedValue<int> get getCount {
+    return _connection.cache<int>((Session session) {
+      return session.get<int>('counter');
+    }, initial: 0);
+  }
+
+  void incrementCounter() {
+    _connection.call((Session session) {
+      session.post('increment');
+    });
+  }
+}
+
 class _MyHomePageState extends ShorebirdState<MyHomePage> {
   late CachedValue<int> _counter;
   late Connection _connection;
@@ -67,7 +91,7 @@ class _MyHomePageState extends ShorebirdState<MyHomePage> {
   }
 
   void _incrementCounter() {
-    _connection.incrementCount();
+    _connection.incrementCounter();
   }
 
   @override
