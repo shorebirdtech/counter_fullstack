@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'infra/client.dart';
-import 'backend.dart';
+import 'gen/interface.dart';
+import 'infra/state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,66 +31,19 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// Dart (intentionally) does not have finalizers, so to manage listening
-// its easier to let State do so, since it already gets a dispose call.
-abstract class ShorebirdState<T extends StatefulWidget> extends State<T> {
-  final List<Listenable> _listenables = <Listenable>[];
-
-  void watch(Listenable listenable) {
-    _listenables.add(listenable);
-    listenable.addListener(_update);
-  }
-
-  void _update() {
-    // One of our listenables changed, so rebuild the entire widget.
-    // If you want more precise control, you can use a ValueListenableBuilder.
-    setState(() {});
-  }
-
-  @override
-  @mustCallSuper
-  void dispose() {
-    final listenables = List.from(_listenables);
-    _listenables.clear();
-    for (final listenable in listenables) {
-      listenable.removeListener(_update);
-    }
-    super.dispose();
-  }
-}
-
-// generated
-class MyInterface {
-  MyInterface(this._connection);
-
-  final Connection _connection;
-
-  CachedValue<int> get getCount {
-    return _connection.cache<int>((Session session) {
-      return session.get<int>('counter');
-    }, initial: 0);
-  }
-
-  void incrementCounter() {
-    _connection.call((Session session) {
-      session.post('increment');
-    });
-  }
-}
-
-class _MyHomePageState extends ShorebirdState<MyHomePage> {
+class _MyHomePageState extends ListenableState<MyHomePage> {
   late CachedValue<int> _counter;
-  late Connection _connection;
+  late MyInterface _interface;
 
   @override
   void initState() {
     super.initState();
-    _connection = MyInterface(Connection(url));
-    watch(_counter = _connection.getCount());
+    _interface = MyInterface();
+    listen(_counter = _interface.getCount());
   }
 
   void _incrementCounter() {
-    _connection.incrementCounter();
+    _interface.incrementCounter();
   }
 
   @override
