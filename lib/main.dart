@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'infra/client.dart';
-import 'backend.dart';
+import 'gen/interface.dart';
+import 'infra/state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,21 +31,19 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ListenableState<MyHomePage> {
   late CachedValue<int> _counter;
-  late Connection _connection;
+  late MyInterface _interface;
 
   @override
   void initState() {
     super.initState();
-    _connection = Connection();
-    _counter = _connection.cache(getCount, initial: 0);
+    _interface = MyInterface();
+    listen(_counter = _interface.getCount());
   }
 
   void _incrementCounter() {
-    setState(() {
-      _connection.call(incrementCount);
-    });
+    _interface.incrementCounter();
   }
 
   @override
