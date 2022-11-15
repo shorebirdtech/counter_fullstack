@@ -2,6 +2,10 @@
 
 A new Flutter project.
 
+# Todo
+* Add offline behavior.
+* Move all share code out of this project.
+
 ## Desired counter behavior
 * Display last cached.
 * Display indicator that offline / loading.

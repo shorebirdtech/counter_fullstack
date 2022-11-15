@@ -35,10 +35,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-
-  # FIXME: These should not be direct dependencies.
+  shorebird:
+    path: ../shorebird/packages/shorebird
+  shorebird_flutter:
+    path: ../shorebird/packages/shorebird_flutter
+  # FIXME: These should not be direct dependencies:
   http: ^0.13.5
-  eventsource: ^0.5.0
+  eventsource:
+    git: https://github.com/eseidel/dart-eventsource.git
   shelf: ^1.4.0
   shelf_eventsource:
     git: https://github.com/eseidel/dart-shelf_eventsource.git
@@ -58,9 +62,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
-  # FIXME: Should not be a direct dependency.
-  process_run: ^0.12.3+2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

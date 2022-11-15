@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shorebird_flutter/shorebird_flutter.dart';
 
 import 'gen/interface.dart';
-import 'infra/state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,18 +32,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends ListenableState<MyHomePage> {
-  late CachedValue<int> _counter;
-  late MyInterface _interface;
+  late CachedValue<int> _cachedCounter;
+  late CounterClient _client;
 
   @override
   void initState() {
     super.initState();
-    _interface = MyInterface();
-    listen(_counter = _interface.getCount());
+    _client = CounterClient();
+    listen(_cachedCounter = _client.watch());
   }
 
   void _incrementCounter() {
-    _interface.incrementCounter();
+    _client.increment();
   }
 
   @override
@@ -60,7 +60,7 @@ class _MyHomePageState extends ListenableState<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '$_cachedCounter',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],

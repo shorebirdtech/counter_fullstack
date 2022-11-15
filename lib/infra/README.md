@@ -1,1 +1,0 @@
-This folder contains all the code which should end up in some other package(s).
