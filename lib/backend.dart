@@ -73,7 +73,7 @@ class MyStore extends DataStore {
 }
 
 @backend
-Stream<int> getCount(Session session) {
+Stream<int> watchCounter(Session session) {
   // Should this use Key Value Observing?
   // https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueCoding/index.html
   return MyStore.of(session).watchInt('count');
