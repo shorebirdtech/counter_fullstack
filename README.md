@@ -1,6 +1,9 @@
 # counter_fullstack
 
-A new Flutter project.
+This project is now archived.
+
+This was one of the very first explorations that informed the initial serverless
+Dart demos for Shorebird.  It's no longer being developed.
 
 # Todo
 * Add offline behavior.
